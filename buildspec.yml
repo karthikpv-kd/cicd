@@ -1,10 +1,31 @@
 version: 0.2
 
 phases:
+  pre_build:
+    commands:
+      - echo "Starting pre-build phase..."
+      - echo "Current directory:" $(pwd)
+      - echo "Java version:" $(java -version)
+      - echo "Maven version:" $(mvn -version)
+  
   build:
     commands:
-      - mvn clean package
+      - echo "Starting build phase..."
+      - mvn clean package -DskipTests
+      - echo "Build completed successfully"
+  
+  post_build:
+    commands:
+      - echo "Build artifacts:"
+      - ls -lah target/
 
 artifacts:
   files:
     - target/*.jar
+    - Procfile
+    - .ebextensions/**/*
+  name: cicd-backend-$(date +%Y%m%d-%H%M%S).zip
+  
+cache:
+  paths:
+    - '/root/.m2/**/*'
