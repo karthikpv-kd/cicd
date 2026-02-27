@@ -11,4 +11,9 @@ public class TestController {
     public String index() {
         return "Hello World - this is version 2";
     }
+
+    @GetMapping("version")
+    public String version(){
+        return "Version 1";
+    }
 }
